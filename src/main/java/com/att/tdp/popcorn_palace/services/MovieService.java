@@ -37,7 +37,7 @@ public class MovieService {
 
     // Get a single movie by title
     public MovieDTO getMovieByTitle(String title) {
-        Movie movie = movieRepository.findByTitle(title).orElseThrow(() -> new RuntimeException("Movie not found"));
+        Movie movie = movieRepository.findByTitle(title).orElseThrow(() -> new ObjectNotFoundException("Movie not found"));
         return mapToDTO(movie);
     }
 
