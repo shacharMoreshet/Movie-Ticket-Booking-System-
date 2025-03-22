@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/movies")
-public class MovieController {
+public class MovieController extends ErrorHandlingController {
 
     private final MovieService movieService;
 
@@ -33,7 +33,7 @@ public class MovieController {
     @PostMapping
     public ResponseEntity<MovieDTO> addMovie(@RequestBody MovieDTO movieDTO) {
         MovieDTO createdMovie = movieService.createMovie(movieDTO);
-        return new ResponseEntity<>(createdMovie, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdMovie, HttpStatus.OK);
     }
 
     @PostMapping("/update/{movieTitle}")
@@ -46,15 +46,5 @@ public class MovieController {
     public ResponseEntity<Void> deleteMovie(@PathVariable String movieTitle) {
         movieService.deleteMovie(movieTitle);
         return new ResponseEntity<>(HttpStatus.OK); // Changed to OK
-    }
-
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<String> handleObjectNotFoundException(ObjectNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ObjectAlreadyExist.class)
-    public ResponseEntity<String> handleObjectAlreadyExist(ObjectAlreadyExist ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

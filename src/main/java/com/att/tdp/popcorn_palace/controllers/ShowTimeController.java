@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/showtimes")
-public class ShowTimeController {
+public class ShowTimeController extends ErrorHandlingController {
 
     private final ShowTimeService showtimeService;
 
@@ -26,7 +26,7 @@ public class ShowTimeController {
     @PostMapping
     public ResponseEntity<ShowTimeDTO> addShowtime(@RequestBody ShowTimeDTO showtimeDTO) {
         ShowTimeDTO createdShowtime = showtimeService.createShowtime(showtimeDTO);
-        return new ResponseEntity<>(createdShowtime, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdShowtime, HttpStatus.OK);
     }
 
     @PostMapping("/update/{showtimeId}")
@@ -39,10 +39,5 @@ public class ShowTimeController {
     public ResponseEntity<Void> deleteShowtime(@PathVariable Long showtimeId) {
         showtimeService.deleteShowtime(showtimeId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<String> handleObjectNotFoundException(ObjectNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
